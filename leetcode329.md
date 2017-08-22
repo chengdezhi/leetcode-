@@ -1,7 +1,10 @@
 # leetcode 329 Longest Increasing Path in a Matrix
+链接： https://leetcode.com/problems/longest-increasing-path-in-a-matrix/solution/
+
 dfs + cached 数组
 如果直接采用dfs的话，会出现TLE。这和斐波拉契数列的求法是一致的，因为直接dfs会出现重复求解一个问题很多次的情况，造成时间与空间的浪费。因而一个很直观的作法就是将结果存起来。
-    class Solution {
+    
+     class Solution {
         private int m,n;
         private int[][] cached;
         private static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
