@@ -4,24 +4,25 @@
 dfs + cached 数组
 如果直接采用dfs的话，会出现TLE。这和斐波拉契数列的求法是一致的，因为直接dfs会出现重复求解一个问题很多次的情况，造成时间与空间的浪费。因而一个很直观的作法就是将结果存起来。
    
-      `class Solution {
-           private int m,n;
-           private int[][] cached;
-           private static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-           public int longestIncreasingPath(int[][] matrix) {
-               if(matrix==null) return 0;
-               if(matrix.length==0) return 0;
-               m = matrix.length;
-               n = matrix[0].length;
-               cached = new int[m][n];
-               int ans = 0;
-               for(int i=0;i<m;i++){
-                   for(int j=0;j<n;j++){
-                       ans = Math.max(ans, dfs(matrix, i, j));
-                   }
-               }
-               return ans;
-           }
+      `
+      class Solution {
+             private int m,n;
+             private int[][] cached;
+             private static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+             public int longestIncreasingPath(int[][] matrix) {
+                 if(matrix==null) return 0;
+                 if(matrix.length==0) return 0;
+                 m = matrix.length;
+                 n = matrix[0].length;
+                 cached = new int[m][n];
+                 int ans = 0;
+                 for(int i=0;i<m;i++){
+                     for(int j=0;j<n;j++){
+                         ans = Math.max(ans, dfs(matrix, i, j));
+                     }
+                 }
+                 return ans;
+             }
              private int dfs(int[][] matrix, int i, int j){
                  // System.out.println(cached[i][j]);
                  if(cached[i][j]!=0)  return cached[i][j];
