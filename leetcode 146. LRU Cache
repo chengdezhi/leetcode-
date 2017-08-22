@@ -1,0 +1,89 @@
+经典题目 LRU 
+
+    public class LRUCache {
+              class DlinkedNote{
+                int key;
+                int value;
+                DlinkedNote pre;
+                DlinkedNote post;
+                DlinkedNote(){}
+                DlinkedNote(int key, int value){
+                  this.key = key;
+                  this.value = value;
+                  }
+              }
+
+              HashMap<Integer, DlinkedNote> cache = new HashMap<Integer, DlinkedNote>();
+              int capacity;
+              DlinkedNote head;
+              DlinkedNote tail;
+
+
+              public DlinkedNote poptail(){
+                DlinkedNote res = tail.pre;
+                removenode(res);
+                return res;
+              }
+
+              public void movetohead(DlinkedNote node){
+              removenode(node);
+              addnode(node);
+            }
+
+            public void removenode(DlinkedNote node){
+              DlinkedNote pre = node.pre;
+              DlinkedNote post = node.post;
+              pre.post = post;
+              post.pre = pre;
+            }
+
+            /** always add at the head of link*/
+            public void addnode(DlinkedNote node){
+              DlinkedNote cur_first = this.head.post;
+              cur_first.pre = node;
+              node.post = cur_first;
+              node.pre = this.head;
+              this.head.post = node;
+            }
+
+              public LRUCache(int capacity) {
+              DlinkedNote head = new DlinkedNote();
+              DlinkedNote tail = new DlinkedNote();
+              head.post = tail;
+              tail.pre = head;
+              this.head = head;
+              this.tail = tail;
+              this.capacity = capacity;
+          //		this.count = 0;
+              }
+
+              public int get(int key) {
+                DlinkedNote res = cache.get(key);
+                if(res==null){
+                  return -1; 
+                }
+                movetohead(res);
+                return res.value;
+              }
+
+              public void put(int key, int value) {
+                DlinkedNote node = cache.get(key);
+                int count = cache.size();
+                if(node==null){
+                  DlinkedNote new_node = new DlinkedNote(key, value); 
+                  this.cache.put(key, new_node);
+                  addnode(new_node);
+                  count++;
+          //    		while(count>this.capacity)
+                  if(count>this.capacity){
+                    DlinkedNote last = this.poptail();
+                    cache.remove(last.key);
+                  }
+                }else{
+                  if(node.value!=value){
+                    node.value = value;
+                  }
+                  movetohead(node);
+                }
+              }
+          }
