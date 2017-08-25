@@ -1,0 +1,46 @@
+题目链接： https://leetcode.com/problems/copy-list-with-random-pointer/description/
+
+注意点： 既然是复制链表，原链表不能变动
+
+acc code :
+
+    /**
+     * Definition for singly-linked list with a random pointer.
+     * class RandomListNode {
+     *     int label;
+     *     RandomListNode next, random;
+     *     RandomListNode(int x) { this.label = x; }
+     * };
+     */
+    public class Solution {
+        public RandomListNode copyRandomList(RandomListNode head) {
+          if(head==null)  return head;
+          RandomListNode p = head;
+          // copy the base
+          while(p!=null){
+            RandomListNode cp = new RandomListNode(p.label);
+            cp.next = p.next;
+            p.next = cp;
+            p = cp.next;
+          }
+          // copy random list 
+          p = head;
+          while(p!=null){
+            if(p.random!=null){
+              p.next.random = p.random.next;
+            }
+            p = p.next.next;
+          }
+          // split 
+          p = head;
+            RandomListNode q = head.next;
+            RandomListNode ret = head.next;
+            while(p!=null){
+                p.next = q.next;
+                if(q.next!=null) q.next = q.next.next;
+                p = p.next;
+                q = q.next;
+            }
+            return ret;
+        }
+    }
