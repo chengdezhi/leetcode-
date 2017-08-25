@@ -1,0 +1,65 @@
+题目链接： https://leetcode.com/problems/word-squares/description/
+
+java 版本， hashmap + backtracking
+
+    public class Solution {
+          public List<List<String>> wordSquares(String[] words) {
+              List<List<String>> res = new ArrayList<List<String>>();
+              if(words.length==0) return res;
+              int word_size = words[0].length();
+              HashMap<String,List<String>> triemap = new HashMap<String,List<String>>();
+              // default list 
+              for(String word:words){
+                for(int i=-1;i<word_size;i++){
+                  if(!triemap.containsKey(word.substring(0, i+1))){
+                    triemap.put(word.substring(0, i+1), new ArrayList<String>());
+                  }
+                  triemap.get(word.substring(0, i+1)).add(word);
+                }
+              }
+              for(String word:words){
+                List<String> start = new ArrayList<String>();
+                start.add(word);
+                dfs(start, triemap, word_size, res);
+              }
+              return res;
+          }
+          private void dfs(List<String> words, HashMap<String,List<String>> triemap, 
+              int word_size,List<List<String>> res){
+            int n = words.size();
+            if(n==word_size){
+              res.add(new ArrayList<String>(words));
+              return;
+            }
+            StringBuilder trie = new StringBuilder();
+            for(String word:words){
+              trie.append(word.charAt(n));
+            }
+            if(triemap.containsKey(trie.toString())){
+                  List<String>  cands = triemap.get(trie.toString());
+                  for(String cand:cands){
+                      words.add(cand);
+                      dfs(words, triemap, word_size, res);
+                      words.remove(words.size()-1);
+                  }
+              }
+          }
+      }
+      
+python 版本 java list传入的是指针，处理起来麻烦
+    def wordSquares(self, words):
+        n = len(words[0])
+        fulls = collections.defaultdict(list)
+        for word in words:
+            for i in range(n):
+                fulls[word[:i]].append(word)
+        def build(square):
+            if len(square) == n:
+                squares.append(square)
+                return
+            for word in fulls[''.join(zip(*square)[len(square)])]:
+                build(square + [word])
+        squares = []
+        for word in words:
+            build([word])
+        return squares
