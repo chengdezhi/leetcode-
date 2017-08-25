@@ -1,0 +1,65 @@
+题目链接答案： https://leetcode.com/problems/reverse-linked-list/description/
+
+
+
+ACC 答案
+注意点:1) 空链表的处理  2） 头部的处理   3） 返回尾端的“头指针”
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode(int x) { val = x; }
+     * }
+     */
+    class Solution {
+        public ListNode reverseList(ListNode head) {
+            ListNode p = head;   // before 
+            // ListNode p_after = head;
+            if(head==null) return head;
+            ListNode q = head.next;
+            while(q!=null){
+                ListNode tmp = q.next;
+                // System.out.println(tmp);
+                q.next = p;
+                // System.out.println(tmp);
+                if(p==head)  p.next = null;  // break!
+                p = q;    
+                q = tmp;  // q move to next 
+                // System.out.println(q);
+            }
+            return p;
+        }
+    }
+
+
+
+不明白下面代码的输出： 循环链表
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode(int x) { val = x; }
+     * }
+     */
+    class Solution {
+        public ListNode reverseList(ListNode head) {
+            ListNode p = head;
+            // ListNode p_after = head;
+            if(head==null) return head;
+            ListNode q = head.next;
+            while(q!=null){
+                ListNode tmp = q.next;
+                // System.out.println(tmp);  // null
+                q.next = p;
+                // System.out.println(tmp);  // null
+                // p.next = null;
+                p = q;
+                q = tmp;  // q move to next 
+                // System.out.println(q);    // null
+            }
+            return p;
+        }
+    }
